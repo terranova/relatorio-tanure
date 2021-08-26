@@ -107,8 +107,10 @@ as.numeric(razao_multa <- floor(vl_caso / multa_max))
 labs <- forcats::as_factor(c(
   "Multa média",
   "Multa mediana",
+  "Multa limite",
   "Multa estimada\npelo modelo",
-  "Valor em discussão"
+  "Proposta\nNelson Tanure",
+  "Proposta do CTC"
 ))
 
 # Formatação dos valores
@@ -119,7 +121,14 @@ format_vl_multa <- scales::dollar_format(
 )
 
 dados_plot <- tibble::tibble(
-  valor = c(mean(dados$multa), median(dados$multa), multa_max, vl_caso),
+  valor = c(
+    mean(dados$multa),
+    median(dados$multa),
+    500000,
+    multa_max,
+    600000,
+    vl_caso
+  ),
   tipo = labs
 )
 
@@ -128,7 +137,7 @@ p_modelo <- dados_plot |>
   ggplot2::aes(x = tipo, y = valor, label = format_vl_multa(valor)) +
   ggplot2::geom_col(
     width = .5,
-    fill = c("#524243", "#524243", "#007A74", "#E17605")
+    fill = c(rep("#524243", 3), rep("#007A74", 2), "#E17605")
   ) +
   ggplot2::geom_text(vjust = -1) +
   ggplot2::scale_y_continuous(
